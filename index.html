@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A&amp;P Venturez | Digital Architecture, AI Media &amp; Growth Systems</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Plus Jakarta Sans, Space Grotesk, Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#070709',
+                        elevated: '#0E0E12',
+                        elevatedHover: '#14141B',
+                        platinum: '#F5F5F7',
+                        silver: '#9A9AA2',
+                        gold: '#D6B36A',
+                        goldLight: '#E5C885',
+                        goldDark: '#B8944B',
+                        crimson: '#C82333',
+                        emeraldAccent: '#10B981'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                        grotesk: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #070709;
+            color: #F5F5F7;
+        }
+        .ambient-top {
+            background: radial-gradient(65% 45% at 50% 0%, rgba(214, 179, 106, 0.08) 0%, rgba(7, 7, 9, 0) 100%);
+        }
+        .glass-nav {
+            background: rgba(7, 7, 9, 0.86);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .service-card {
+            transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+        }
+        .service-card:hover {
+            border-color: rgba(214, 179, 106, 0.35);
+            background-color: #111116;
+        }
+        .service-card-active {
+            border-color: #D6B36A !important;
+            background-color: #12110E !important;
+            box-shadow: 0 0 0 1px rgba(214, 179, 106, 0.2);
+        }
+        input[type="checkbox"], input[type="radio"] {
+            accent-color: #D6B36A;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold selection:text-obsidian min-h-screen flex flex-col">
+
+    <!-- Floating Toast Notification -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 pointer-events-none flex flex-col gap-2"></div>
+
+    <!-- ===================================================================== -->
+    <!-- UNIFIED STICKY HEADER WITH INSTANT VIEW NAVIGATION                    -->
+    <!-- ===================================================================== -->
+    <header class="sticky top-0 z-40 glass-nav border-b border-white/[0.08]">
+        <div class="max-w-6xl mx-auto px-5 sm:px-10 h-20 flex items-center justify-between gap-3">
+
+            <!-- Brand Logo (Switches back to Main Studio) -->
+            <button type="button" onclick="navigateToView('home')" class="flex items-center gap-3 group text-left focus:outline-none">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg border border-gold/40 bg-elevated flex items-center justify-center relative overflow-hidden transition-colors group-hover:border-gold shrink-0">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M4 25L12 7L17.5 19.5" stroke="#D6B36A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7.5 18.5H15.5" stroke="#D6B36A" stroke-width="1.75" stroke-linecap="round"/>
+                        <path d="M18.5 7H24C26.4853 7 28.5 9.01472 28.5 11.5C28.5 13.9853 26.4853 16 24 16H18.5V25" stroke="#F5F5F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-grotesk font-bold text-sm sm:text-lg tracking-[0.14em] text-platinum leading-none">
+                        A&amp;P <span class="text-gold">VENTUREZ</span>
+                    </span>
+                    <span id="header-subtitle" class="font-mono text-[10px] tracking-[0.18em] text-silver uppercase mt-1">
+                        Digital Studio
+                    </span>
+                </div>
+            </button>
+
+            <!-- Desktop Anchor & View Switcher -->
+            <nav aria-label="Primary Navigation" class="hidden lg:flex items-center gap-6 text-xs font-mono text-silver">
+                <button type="button" onclick="navigateToView('home', 'packages')" class="hover:text-platinum transition-colors">Packages</button>
+                <button type="button" onclick="navigateToView('home', 'capabilities')" class="hover:text-platinum transition-colors">Capabilities</button>
+                <button type="button" onclick="navigateToView('home', 'portfolio-demos')" class="hover:text-platinum transition-colors">Sample Work</button>
+                <button type="button" onclick="navigateToView('home', 'idea-to-asset')" class="hover:text-platinum transition-colors">Idea-to-Asset</button>
+                <button type="button" onclick="navigateToView('intake')" class="hover:text-gold transition-colors">60-Sec Intake</button>
+            </nav>
+
+            <!-- Action CTAs -->
+            <div class="flex items-center gap-2.5">
+                <button type="button" id="back-to-home-btn" onclick="navigateToView('home')" class="hidden items-center gap-1.5 px-3.5 py-2 rounded-full bg-elevated hover:bg-elevatedHover border border-white/[0.12] hover:border-gold/50 text-platinum font-mono text-xs transition-colors">
+                    <span>&larr; Studio</span>
+                </button>
+                <button type="button" onclick="navigateToView('intake')" class="px-3.5 sm:px-4 py-2.5 rounded-full bg-elevated hover:bg-elevatedHover border border-white/[0.12] hover:border-gold/50 text-platinum font-display font-medium text-xs transition-colors">
+                    60-Sec Intake
+                </button>
+                <button type="button" onclick="navigateToView('home', 'start-build')" class="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-gold hover:bg-goldLight text-obsidian font-display font-semibold text-xs sm:text-sm tracking-tight transition-all">
+                    <span>Start a Project</span>
+                    <span id="nav-scope-badge" class="hidden items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-obsidian text-gold font-mono text-[11px] font-medium">0</span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 1: MAIN A&P VENTUREZ STUDIO HOMEPAGE                             -->
+    <!-- ===================================================================== -->
+    <div id="view-home" class="app-view flex-1">
+        <main>
+            <!-- Monumental Hero -->
+            <section class="ambient-top pt-20 pb-16 sm:pt-28 sm:pb-24 px-6 sm:px-10 border-b border-white/[0.08]">
+                <div class="max-w-6xl mx-auto">
+                    <div class="max-w-4xl space-y-7">
+                        <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-elevated border border-white/[0.08]">
+                            <span class="w-1.5 h-1.5 rounded-full bg-crimson"></span>
+                            <span class="font-mono text-[11px] tracking-[0.18em] text-silver uppercase">
+                                Digital Architecture &bull; AI Media &bull; Growth Systems
+                            </span>
+                        </div>
+
+                        <h1 class="font-display font-bold text-4xl sm:text-6xl lg:text-[64px] text-platinum tracking-[-0.03em] leading-[1.06]">
+                            Bring an Idea or a Business. <span class="text-gold">Leave With an Unfair Advantage.</span>
+                        </h1>
+
+                        <p class="text-lg sm:text-xl text-silver leading-relaxed max-w-2xl font-normal">
+                            A&amp;P Venturez transforms raw concepts and established companies into high-converting websites, custom AI media briefings, executive pitch decks, and automated workflows.
+                        </p>
+
+                        <div class="pt-2 flex flex-wrap items-center gap-4">
+                            <a href="#packages" class="px-7 py-4 rounded-full bg-gold hover:bg-goldLight text-obsidian font-display font-semibold text-sm tracking-tight transition-colors">
+                                View Fixed Packages &amp; Checkout
+                            </a>
+                            <a href="#portfolio-demos" class="px-7 py-4 rounded-full bg-elevated hover:bg-elevatedHover border border-white/[0.12] hover:border-gold/50 text-platinum font-display font-medium text-sm tracking-tight transition-colors">
+                                See Live Before &amp; After Demos
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 3-Column Proof Bar -->
+                    <div class="mt-16 sm:mt-20 pt-10 border-t border-white/[0.08] grid md:grid-cols-3 gap-8 md:gap-0 md:divide-x md:divide-white/[0.08]">
+                        <div class="md:pr-8 space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="font-mono text-xs text-gold">01</span>
+                                <h2 class="font-display font-semibold text-base text-platinum tracking-tight">Ideas to Launch</h2>
+                            </div>
+                            <p class="text-sm text-silver leading-relaxed">
+                                Full visual, audio, and web execution from a rough note.
+                            </p>
+                        </div>
+
+                        <div class="md:px-8 space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="font-mono text-xs text-gold">02</span>
+                                <h2 class="font-display font-semibold text-base text-platinum tracking-tight">Business Upgrades</h2>
+                            </div>
+                            <p class="text-sm text-silver leading-relaxed">
+                                High-converting sites, audits, and automated lead capture.
+                            </p>
+                        </div>
+
+                        <div class="md:pl-8 space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="font-mono text-xs text-gold">03</span>
+                                <h2 class="font-display font-semibold text-base text-platinum tracking-tight">Direct Execution</h2>
+                            </div>
+                            <p class="text-sm text-silver leading-relaxed">
+                                Built fast, clean, and tailored to your exact market.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fixed Packages & Transparent Pricing -->
+            <section id="packages" class="py-20 sm:py-28 px-6 sm:px-10 border-b border-white/[0.08]">
+                <div class="max-w-6xl mx-auto space-y-12">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div class="space-y-3 max-w-2xl">
+                            <p class="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                                Transparent Flat-Rate Pricing &bull; Instant Checkout
+                            </p>
+                            <h2 class="font-display font-bold text-3xl sm:text-5xl text-platinum tracking-[-0.02em]">
+                                Packages &amp; Pricing
+                            </h2>
+                        </div>
+                        <p class="text-sm sm:text-base text-silver max-w-md">
+                            Lock in your build immediately via secure Payhip checkout, or add a package to your custom project brief below.
+                        </p>
+                    </div>
+
+                    <div id="packages-grid" class="grid lg:grid-cols-3 gap-7 items-stretch"></div>
+                </div>
+            </section>
+
+            <!-- 3x3 Capabilities Grid -->
+            <section id="capabilities" class="py-20 sm:py-28 px-6 sm:px-10 border-b border-white/[0.08]">
+                <div class="max-w-6xl mx-auto space-y-12">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div class="space-y-3 max-w-2xl">
+                            <p class="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                                Individual Deliverables &amp; Add-Ons
+                            </p>
+                            <h2 class="font-display font-bold text-3xl sm:text-5xl text-platinum tracking-[-0.02em]">
+                                Services I Offer
+                            </h2>
+                        </div>
+                        <p class="text-sm sm:text-base text-silver max-w-md">
+                            Toggle any individual deliverable below to add it to your project scope—standalone or paired with a package.
+                        </p>
+                    </div>
+
+                    <div id="services-bento-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+            </section>
+
+            <!-- Live Portfolio Demos & Before/After Case Studies -->
+            <section id="portfolio-demos" class="py-20 sm:py-28 px-6 sm:px-10 border-b border-white/[0.08]">
+                <div class="max-w-6xl mx-auto space-y-12">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div class="space-y-3 max-w-2xl">
+                            <p class="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                                Proof of Execution &bull; Interactive Demos
+                            </p>
+                            <h2 class="font-display font-bold text-3xl sm:text-5xl text-platinum tracking-[-0.02em]">
+                                Sample Work &amp; Before / Afters
+                            </h2>
+                        </div>
+                        <p class="text-sm sm:text-base text-silver max-w-md">
+                            Tap any case study below to launch an interactive preview right inside this page.
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-7">
+                        <!-- Demo 01 -->
+                        <article class="rounded-2xl bg-elevated border border-white/[0.08] hover:border-gold/45 p-7 flex flex-col justify-between gap-6 transition-colors">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-gold uppercase">Case Study 01</span>
+                                    <span class="px-2.5 py-1 rounded-full bg-obsidian border border-white/[0.08] font-mono text-[10px] text-silver">Tier 02 ($297)</span>
+                                </div>
+                                <h3 class="font-display font-bold text-xl text-platinum">
+                                    Local Auto Repair Before &amp; After
+                                </h3>
+                                <p class="text-sm text-silver leading-relaxed">
+                                    Interactive Before-and-After website overhaul, 1-page lead-leak audit report, and promotional winter brake infographic.
+                                </p>
+                            </div>
+                            <button type="button" onclick="navigateToView('demo-auto')" class="inline-flex items-center justify-between w-full px-5 py-3 rounded-full bg-obsidian hover:bg-gold text-platinum hover:text-obsidian border border-white/[0.12] hover:border-gold font-display font-semibold text-xs transition-colors">
+                                <span>Open Interactive Demo</span>
+                                <span>&rarr;</span>
+                            </button>
+                        </article>
+
+                        <!-- Demo 02 -->
+                        <article class="rounded-2xl bg-elevated border border-white/[0.08] hover:border-gold/45 p-7 flex flex-col justify-between gap-6 transition-colors">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-gold uppercase">Case Study 02</span>
+                                    <span class="px-2.5 py-1 rounded-full bg-obsidian border border-white/[0.08] font-mono text-[10px] text-silver">Tier 03 ($497)</span>
+                                </div>
+                                <h3 class="font-display font-bold text-xl text-platinum">
+                                    Contractor Site + 24/7 AI Receptionist
+                                </h3>
+                                <p class="text-sm text-silver leading-relaxed">
+                                    High-converting emergency dispatch landing page paired with a live 24/7 AI assistant that answers pricing &amp; captures after-hours leads.
+                                </p>
+                            </div>
+                            <button type="button" onclick="navigateToView('demo-contractor')" class="inline-flex items-center justify-between w-full px-5 py-3 rounded-full bg-obsidian hover:bg-gold text-platinum hover:text-obsidian border border-white/[0.12] hover:border-gold font-display font-semibold text-xs transition-colors">
+                                <span>Test Live AI &amp; Page</span>
+                                <span>&rarr;</span>
+                            </button>
+                        </article>
+
+                        <!-- Demo 03 -->
+                        <article class="rounded-2xl bg-elevated border border-white/[0.08] hover:border-gold/45 p-7 flex flex-col justify-between gap-6 transition-colors">
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-xs text-gold uppercase">Case Study 03</span>
+                                    <span class="px-2.5 py-1 rounded-full bg-obsidian border border-white/[0.08] font-mono text-[10px] text-silver">Tier 01 ($149)</span>
+                                </div>
+                                <h3 class="font-display font-bold text-xl text-platinum">
+                                    48-Hour Idea Launchpad Pack
+                                </h3>
+                                <p class="text-sm text-silver leading-relaxed">
+                                    See how a 3-sentence concept becomes a Strategy Mind Map, an interactive 6-slide Executive Pitch Deck, and an Audio Overview.
+                                </p>
+                            </div>
+                            <button type="button" onclick="navigateToView('demo-idea')" class="inline-flex items-center justify-between w-full px-5 py-3 rounded-full bg-obsidian hover:bg-gold text-platinum hover:text-obsidian border border-white/[0.12] hover:border-gold font-display font-semibold text-xs transition-colors">
+                                <span>Explore Idea Pack</span>
+                                <span>&rarr;</span>
+                            </button>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Idea or Business Transformation Previewer -->
+            <section id="idea-to-asset" class="py-20 sm:py-28 px-6 sm:px-10 border-b border-white/[0.08]">
+                <div class="max-w-6xl mx-auto space-y-12">
+                    <div class="space-y-3 max-w-2xl">
+                        <p class="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                            Tailored Execution Tracks
+                        </p>
+                        <h2 class="font-display font-bold text-3xl sm:text-5xl text-platinum tracking-[-0.02em]">
+                            Idea or Business Transformation
+                        </h2>
+                    </div>
+
+                    <div class="grid lg:grid-cols-12 gap-10 items-start">
+                        <!-- Track Toggle & Interactive Checklist -->
+                        <div class="lg:col-span-5 space-y-6">
+                            <div role="tablist" aria-label="Select Client Track" class="p-1.5 rounded-xl bg-elevated border border-white/[0.08] grid grid-cols-2 gap-1.5">
+                                <button type="button" role="tab" id="track-btn-idea" aria-selected="true" onclick="setTrack('idea')" class="py-3 px-4 rounded-lg text-xs sm:text-sm font-display font-semibold transition-all bg-gold text-obsidian">
+                                    I Have a New Idea
+                                </button>
+                                <button type="button" role="tab" id="track-btn-business" aria-selected="false" onclick="setTrack('business')" class="py-3 px-4 rounded-lg text-xs sm:text-sm font-display font-semibold transition-all text-silver hover:text-platinum">
+                                    I Have an Existing Business
+                                </button>
+                            </div>
+
+                            <p id="track-summary" class="text-sm sm:text-base text-silver leading-relaxed">
+                                You don't need a logo, deck, or technical plan to start. Bring a rough voice memo or concept note—we turn it into a credible, launch-ready brand ecosystem.
+                            </p>
+
+                            <div class="space-y-3 pt-2">
+                                <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-silver block">
+                                    Recommended Modules (Click to Add)
+                                </span>
+                                <div id="track-checklist" class="space-y-2.5"></div>
+                            </div>
+                        </div>
+
+                        <!-- Live Transformation Blueprint Card -->
+                        <div class="lg:col-span-7">
+                            <div class="rounded-2xl bg-elevated border border-white/[0.1] p-7 sm:p-10 space-y-8">
+                                <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/[0.08]">
+                                    <div>
+                                        <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-gold block">
+                                            Execution Blueprint
+                                        </span>
+                                        <h3 id="blueprint-title" class="font-display font-bold text-xl sm:text-2xl text-platinum mt-1">
+                                            Concept-to-Market Launch Architecture
+                                        </h3>
+                                    </div>
+                                    <span id="blueprint-badge" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-obsidian border border-gold/40 font-mono text-xs text-gold">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+                                        <span>New Venture Track</span>
+                                    </span>
+                                </div>
+
+                                <div class="space-y-5">
+                                    <div class="p-5 rounded-xl bg-obsidian border border-white/[0.06] space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-mono text-[11px] uppercase tracking-[0.16em] text-silver">01 &bull; Starting Input</span>
+                                            <span class="font-mono text-[11px] text-silver/60">YOUR RAW MATERIAL</span>
+                                        </div>
+                                        <p id="blueprint-input" class="text-sm text-platinum leading-relaxed">
+                                            A rough concept, voice note, bullet list, or market problem you want to solve.
+                                        </p>
+                                    </div>
+
+                                    <div class="p-5 rounded-xl bg-obsidian border border-gold/25 space-y-2">
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-mono text-[11px] uppercase tracking-[0.16em] text-gold">02 &bull; Custom Studio Build</span>
+                                            <span class="font-mono text-[11px] text-gold">TAILORED SCOPE</span>
+                                        </div>
+                                        <p id="blueprint-build" class="text-sm text-silver leading-relaxed">
+                                            We structure your positioning, map the customer journey, produce executive pitch &amp; audio assets, and engineer a flagship web presence.
+                                        </p>
+                                    </div>
+
+                                    <div class="p-5 rounded-xl bg-obsidian border border-white/[0.06] space-y-3">
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-mono text-[11px] uppercase tracking-[0.16em] text-silver">03 &bull; Ready-to-Deploy Assets</span>
+                                            <span id="blueprint-asset-count" class="font-mono text-[11px] text-gold">4 Core Deliverables</span>
+                                        </div>
+                                        <div id="blueprint-outputs" class="flex flex-wrap gap-2"></div>
+                                    </div>
+                                </div>
+
+                                <div class="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <p class="text-xs text-silver">
+                                        Every deliverable is 100% client-owned upon completion.
+                                    </p>
+                                    <a href="#start-build" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gold hover:bg-goldLight text-obsidian font-display font-semibold text-xs transition-colors">
+                                        <span>Lock In This Scope</span>
+                                        <span aria-hidden="true">&rarr;</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3-Step Execution Protocol & Direct Project Inquiry -->
+            <section id="process" class="py-20 sm:py-28 px-6 sm:px-10">
+                <div class="max-w-6xl mx-auto space-y-20">
+                    <!-- 3 Steps -->
+                    <div class="space-y-10">
+                        <div class="space-y-3 max-w-2xl">
+                            <p class="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                                Execution Protocol
+                            </p>
+                            <h2 class="font-display font-bold text-3xl sm:text-5xl text-platinum tracking-[-0.02em]">
+                                From First Note to Live Launch
+                            </h2>
+                        </div>
+
+                        <div class="grid md:grid-cols-3 gap-8">
+                            <div class="p-7 rounded-2xl bg-elevated border border-white/[0.08] space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-sm font-medium text-gold">01</span>
+                                    <span class="h-px w-12 bg-white/[0.08]"></span>
+                                </div>
+                                <h3 class="font-display font-semibold text-xl text-platinum">
+                                    Share Your Idea or Link
+                                </h3>
+                                <p class="text-sm text-silver leading-relaxed">
+                                    Send over your rough concept, notes, or current website URL. No formal brief or technical preparation needed.
+                                </p>
+                            </div>
+
+                            <div class="p-7 rounded-2xl bg-elevated border border-white/[0.08] space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-sm font-medium text-gold">02</span>
+                                    <span class="h-px w-12 bg-white/[0.08]"></span>
+                                </div>
+                                <h3 class="font-display font-semibold text-xl text-platinum">
+                                    Custom Asset &amp; Web Production
+                                </h3>
+                                <p class="text-sm text-silver leading-relaxed">
+                                    Paul architects and builds your tailored websites, AI media briefings, pitch decks, and automated lead systems.
+                                </p>
+                            </div>
+
+                            <div class="p-7 rounded-2xl bg-elevated border border-white/[0.08] space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-mono text-sm font-medium text-gold">03</span>
+                                    <span class="h-px w-12 bg-white/[0.08]"></span>
+                                </div>
+                                <h3 class="font-display font-semibold text-xl text-platinum">
+                                    Launch &amp; Scale
+                                </h3>
+                                <p class="text-sm text-silver leading-relaxed">
+                                    Deploy your complete digital presence with full ownership, ready to pitch investors, close clients, and capture leads 24/7.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Direct Studio Inquiry Form -->
+                    <div id="start-build" class="scroll-mt-28 max-w-4xl mx-auto">
+                        <div class="rounded-2xl bg-elevated border border-white/[0.1] p-7 sm:p-12 space-y-8">
+                            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-white/[0.08]">
+                                <div class="space-y-2">
+                                    <p class="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                                        Direct Studio Inquiry &amp; Checkout
+                                    </p>
+                                    <h2 class="font-display font-bold text-2xl sm:text-4xl text-platinum tracking-[-0.02em]">
+                                        Start Your Build
+                                    </h2>
+                                </div>
+                                <button type="button" onclick="copyDirectEmail()" class="inline-flex items-center gap-2 text-xs font-mono text-silver hover:text-gold transition-colors self-start sm:self-auto">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-crimson"></span>
+                                    <span>venturez.ap@gmail.com</span>
+                                </button>
+                            </div>
+
+                            <form id="project-brief-form" onsubmit="handleBriefSubmit(event)" class="space-y-7">
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <label class="font-mono text-xs uppercase tracking-[0.16em] text-silver">
+                                            Selected Package &amp; Add-Ons (<span id="form-scope-count" class="text-gold">0</span>)
+                                        </label>
+                                        <button type="button" id="clear-scope-btn" onclick="clearAllServices()" class="hidden font-mono text-xs text-silver hover:text-gold transition-colors">
+                                            Clear all
+                                        </button>
+                                    </div>
+
+                                    <div id="active-scope-tags" class="p-4 rounded-xl bg-obsidian border border-white/[0.08] min-h-[56px] flex flex-wrap items-center gap-2"></div>
+
+                                    <details class="group">
+                                        <summary class="cursor-pointer list-none inline-flex items-center gap-2 text-xs font-mono text-gold hover:text-goldLight transition-colors pt-1">
+                                            <span>+ Quick-select packages or add-ons right here</span>
+                                            <span class="transition-transform group-open:rotate-180">&#9662;</span>
+                                        </summary>
+                                        <div id="quick-select-pills" class="mt-3 flex flex-wrap gap-2"></div>
+                                    </details>
+                                </div>
+
+                                <div class="grid sm:grid-cols-3 gap-5">
+                                    <div class="space-y-2">
+                                        <label for="client-name" class="block text-xs font-mono uppercase tracking-wider text-silver">
+                                            Your Name *
+                                        </label>
+                                        <input type="text" id="client-name" required placeholder="Jordan Vance" class="w-full px-4 py-3.5 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum placeholder-silver/40 transition-colors">
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <label for="client-contact" class="block text-xs font-mono uppercase tracking-wider text-silver">
+                                            Email or Phone *
+                                        </label>
+                                        <input type="text" id="client-contact" required placeholder="jordan@brand.com" class="w-full px-4 py-3.5 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum placeholder-silver/40 transition-colors">
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <label for="client-track" class="block text-xs font-mono uppercase tracking-wider text-silver">
+                                            Starting Point
+                                        </label>
+                                        <select id="client-track" onchange="syncSelectToTrack(this.value)" class="w-full px-4 py-3.5 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum transition-colors">
+                                            <option value="New Idea">New Idea</option>
+                                            <option value="Existing Business">Existing Business</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label for="client-details" class="block text-xs font-mono uppercase tracking-wider text-silver">
+                                        Project Details, Idea Summary, or Website URL *
+                                    </label>
+                                    <textarea id="client-details" rows="4" required placeholder="Tell Paul about your idea, your current business website, or the outcomes you want to achieve..." class="w-full px-4 py-3.5 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum placeholder-silver/40 transition-colors"></textarea>
+                                </div>
+
+                                <div class="pt-2 flex flex-wrap items-center gap-3.5">
+                                    <button type="submit" class="px-7 py-4 rounded-full bg-gold hover:bg-goldLight text-obsidian font-display font-semibold text-sm tracking-tight transition-colors">
+                                        Send Project Brief
+                                    </button>
+                                    <a id="direct-payhip-btn" href="https://payhip.com/b/61vhD" target="_blank" rel="noopener noreferrer" class="px-7 py-4 rounded-full bg-emeraldAccent hover:opacity-90 text-obsidian font-display font-semibold text-sm tracking-tight transition-opacity">
+                                        Pay &amp; Lock In Spot (Payhip) &rarr;
+                                    </a>
+                                    <button type="button" onclick="copyFormattedBrief()" class="px-6 py-4 rounded-full bg-obsidian hover:bg-white/[0.04] border border-white/[0.12] hover:border-gold/50 text-platinum font-display font-medium text-sm tracking-tight transition-colors">
+                                        Copy Brief
+                                    </button>
+                                </div>
+
+                                <div id="brief-confirmation" class="hidden p-5 rounded-xl bg-obsidian border border-gold/40 space-y-1">
+                                    <p class="font-display font-semibold text-sm text-gold">
+                                        Project Brief Ready for venturez.ap@gmail.com
+                                    </p>
+                                    <p class="text-xs text-silver leading-relaxed">
+                                        Your formatted brief has been copied to your clipboard and your default mail client has been opened addressed to <span class="text-platinum">venturez.ap@gmail.com</span>.
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 2: 60-SECOND CLIENT INTAKE FORM                                   -->
+    <!-- ===================================================================== -->
+    <div id="view-intake" class="app-view hidden flex-1 ambient-top py-12 sm:py-16 px-6">
+        <div class="max-w-3xl mx-auto space-y-10">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <button type="button" onclick="navigateToView('home')" class="font-mono text-xs text-gold hover:underline">
+                    &larr; Back to Main Studio
+                </button>
+                <span class="font-mono text-xs text-silver">60-Second Onboarding Form</span>
+            </div>
+
+            <div class="space-y-3">
+                <p class="font-mono text-xs uppercase tracking-[0.2em] text-gold">
+                    New Project Onboarding
+                </p>
+                <h1 class="font-display font-bold text-3xl sm:text-4xl text-platinum tracking-[-0.02em]">
+                    Tell Us About Your Idea or Business
+                </h1>
+                <p class="text-sm sm:text-base text-silver leading-relaxed max-w-2xl">
+                    Fill out this quick 60-second intake form so Paul can review your goals, audit any existing links, and send back your tailored execution plan.
+                </p>
+            </div>
+
+            <!-- Live Progress Bar -->
+            <div class="space-y-2">
+                <div class="flex items-center justify-between font-mono text-[11px] text-silver">
+                    <span>INTAKE COMPLETION</span>
+                    <span id="progress-label" class="text-gold">0% Ready</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-elevated overflow-hidden border border-white/[0.06]">
+                    <div id="progress-bar" class="h-full bg-gold transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <form id="client-intake-form" onsubmit="submitIntakeForm(event)" class="space-y-8">
+                <!-- Step 1 -->
+                <section class="rounded-2xl bg-elevated border border-white/[0.08] p-6 sm:p-8 space-y-6">
+                    <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="font-mono text-xs text-gold">01</span>
+                            <h2 class="font-display font-semibold text-lg text-platinum">Contact &amp; Business Details</h2>
+                        </div>
+                        <span class="font-mono text-[11px] text-silver uppercase">Required</span>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div class="space-y-2">
+                            <label for="intake-name" class="block font-mono text-xs uppercase tracking-wider text-silver">Full Name *</label>
+                            <input type="text" id="intake-name" required oninput="updateProgress()" placeholder="Alex Rivera" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum placeholder-silver/40">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="intake-business" class="block font-mono text-xs uppercase tracking-wider text-silver">Business or Project Name *</label>
+                            <input type="text" id="intake-business" required oninput="updateProgress()" placeholder="Rivera Auto Care / New App Idea" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum placeholder-silver/40">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="intake-email" class="block font-mono text-xs uppercase tracking-wider text-silver">Email Address *</label>
+                            <input type="email" id="intake-email" required oninput="updateProgress()" placeholder="alex@business.com" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum placeholder-silver/40">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="intake-phone" class="block font-mono text-xs uppercase tracking-wider text-silver">Phone Number (Text / Call) *</label>
+                            <input type="tel" id="intake-phone" required oninput="updateProgress()" placeholder="(203) 555-0194" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum placeholder-silver/40">
+                        </div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div class="space-y-2">
+                            <label for="intake-url" class="block font-mono text-xs uppercase tracking-wider text-silver">Current Website or Social Link</label>
+                            <input type="text" id="intake-url" placeholder="https://yourbusiness.com or @handle" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum placeholder-silver/40">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="intake-location" class="block font-mono text-xs uppercase tracking-wider text-silver">City &amp; State</label>
+                            <input type="text" id="intake-location" placeholder="Waterbury, CT" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum placeholder-silver/40">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Step 2 -->
+                <section class="rounded-2xl bg-elevated border border-white/[0.08] p-6 sm:p-8 space-y-6">
+                    <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="font-mono text-xs text-gold">02</span>
+                            <h2 class="font-display font-semibold text-lg text-platinum">Choose Your Package or Track</h2>
+                        </div>
+                        <span class="font-mono text-[11px] text-silver uppercase">Select 1</span>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <label class="cursor-pointer flex items-center gap-3 p-4 rounded-xl bg-obsidian border border-white/[0.1] hover:border-gold/50 transition-colors">
+                            <input type="radio" name="stage" value="New Idea / Startup Concept" checked onchange="updateProgress()" class="w-4 h-4">
+                            <div>
+                                <span class="block text-sm font-display font-semibold text-platinum">I Have a New Idea</span>
+                                <span class="block text-xs text-silver">Starting from notes or a rough concept</span>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer flex items-center gap-3 p-4 rounded-xl bg-obsidian border border-white/[0.1] hover:border-gold/50 transition-colors">
+                            <input type="radio" name="stage" value="Existing Business Upgrade" onchange="updateProgress()" class="w-4 h-4">
+                            <div>
+                                <span class="block text-sm font-display font-semibold text-platinum">I Have an Existing Business</span>
+                                <span class="block text-xs text-silver">Upgrading an active brand or website</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-3">
+                        <label class="cursor-pointer flex items-start gap-3 p-4 rounded-xl bg-obsidian border border-white/[0.1] hover:border-gold/50 transition-colors">
+                            <input type="radio" name="package" value="Tier 01: The Idea Launchpad ($149)" onchange="updateProgress()" class="mt-1 w-4 h-4">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-display font-semibold text-platinum">The Idea Launchpad</span>
+                                    <span class="font-mono text-xs text-gold font-medium">$149</span>
+                                </div>
+                                <span class="block text-xs text-silver mt-0.5">Mind Map + 6–8 Slide Deck + Audio/Video Overview (48 hrs)</span>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer flex items-start gap-3 p-4 rounded-xl bg-obsidian border border-gold/45 hover:border-gold transition-colors">
+                            <input type="radio" name="package" value="Tier 02: The Local Business Upgrade ($297)" checked onchange="updateProgress()" class="mt-1 w-4 h-4">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-display font-semibold text-platinum">Local Business Upgrade</span>
+                                    <span class="font-mono text-xs text-gold font-medium">$297</span>
+                                </div>
+                                <span class="block text-xs text-silver mt-0.5">Website Audit + Custom Page/Repair + Infographic (3–4 days)</span>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer flex items-start gap-3 p-4 rounded-xl bg-obsidian border border-white/[0.1] hover:border-gold/50 transition-colors">
+                            <input type="radio" name="package" value="Tier 03: The Automated Growth Engine ($497)" onchange="updateProgress()" class="mt-1 w-4 h-4">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-display font-semibold text-platinum">Automated Growth Engine</span>
+                                    <span class="font-mono text-xs text-gold font-medium">$497</span>
+                                </div>
+                                <span class="block text-xs text-silver mt-0.5">Full Tier 02 + 24/7 AI Assistant + Lead Automation + Training</span>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer flex items-start gap-3 p-4 rounded-xl bg-obsidian border border-white/[0.1] hover:border-gold/50 transition-colors">
+                            <input type="radio" name="package" value="Custom / À La Carte Deliverable Build" onchange="updateProgress()" class="mt-1 w-4 h-4">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm font-display font-semibold text-platinum">Custom Scope</span>
+                                    <span class="font-mono text-xs text-silver">Quote</span>
+                                </div>
+                                <span class="block text-xs text-silver mt-0.5">Pick individual deliverables below for a tailored quote</span>
+                            </div>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Step 3 -->
+                <section class="rounded-2xl bg-elevated border border-white/[0.08] p-6 sm:p-8 space-y-5">
+                    <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="font-mono text-xs text-gold">03</span>
+                            <h2 class="font-display font-semibold text-lg text-platinum">Specific Deliverables Needed</h2>
+                        </div>
+                        <span class="font-mono text-[11px] text-silver uppercase">Check All That Apply</span>
+                    </div>
+                    <div id="deliverable-checkboxes" class="grid sm:grid-cols-2 gap-2.5"></div>
+                </section>
+
+                <!-- Step 4 -->
+                <section class="rounded-2xl bg-elevated border border-white/[0.08] p-6 sm:p-8 space-y-6">
+                    <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="font-mono text-xs text-gold">04</span>
+                            <h2 class="font-display font-semibold text-lg text-platinum">Goals &amp; Timeline</h2>
+                        </div>
+                        <span class="font-mono text-[11px] text-silver uppercase">Final Step</span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="intake-goals" class="block font-mono text-xs uppercase tracking-wider text-silver">What is the #1 outcome you want from this project? *</label>
+                        <textarea id="intake-goals" rows="4" required oninput="updateProgress()" placeholder="Example: We need a clean mobile website with a fast quote form so local customers stop calling competitors..." class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum placeholder-silver/40"></textarea>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div class="space-y-2">
+                            <label for="intake-timeline" class="block font-mono text-xs uppercase tracking-wider text-silver">Target Launch Timeline</label>
+                            <select id="intake-timeline" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum">
+                                <option value="ASAP (48 Hours - 4 Days)">ASAP (48 Hours – 4 Days)</option>
+                                <option value="Within 1-2 Weeks">Within 1–2 Weeks</option>
+                                <option value="This Month / Flexible">This Month / Flexible</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="intake-assets" class="block font-mono text-xs uppercase tracking-wider text-silver">Existing Materials You Have Ready</label>
+                            <select id="intake-assets" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/[0.1] focus:border-gold focus:outline-none text-sm text-platinum">
+                                <option value="Just a rough idea / notes">Just a rough idea / notes</option>
+                                <option value="Logo & basic photos ready">Logo &amp; basic photos ready</option>
+                                <option value="Existing website URL to upgrade">Existing website URL to upgrade</option>
+                                <option value="Documents / PDFs to turn into media">Documents / PDFs to turn into media</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="flex flex-wrap items-center gap-3.5 pt-2">
+                    <button type="submit" class="flex-1 py-4 px-8 rounded-full bg-gold hover:bg-goldLight text-obsidian font-display font-semibold text-sm tracking-tight transition-colors">
+                        Submit Intake to A&amp;P Venturez
+                    </button>
+                    <a href="https://payhip.com/b/61vhD" target="_blank" rel="noopener noreferrer" class="py-4 px-6 rounded-full bg-emeraldAccent hover:opacity-90 text-obsidian font-display font-semibold text-sm tracking-tight transition-opacity text-center">
+                        Pay Now via Payhip &rarr;
+                    </a>
+                    <button type="button" onclick="copyIntakeSummary()" class="py-4 px-6 rounded-full bg-elevated hover:bg-elevatedHover border border-white/[0.12] hover:border-gold/50 text-platinum font-display font-medium text-sm tracking-tight transition-colors">
+                        Copy Summary
+                    </button>
+                </div>
+
+                <div id="intake-success" class="hidden rounded-2xl bg-elevated border border-gold/50 p-6 sm:p-8 space-y-4">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-gold"></span>
+                        <h3 class="font-display font-bold text-lg text-gold">
+                            Intake Form Ready — Sent to venturez.ap@gmail.com
+                        </h3>
+                    </div>
+                    <pre id="intake-preview-box" class="p-4 rounded-xl bg-obsidian border border-white/[0.08] font-mono text-xs text-platinum/90 whitespace-pre-wrap overflow-x-auto"></pre>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 3: DEMO 01 — AUTO REPAIR BEFORE & AFTER ($297 PACK)              -->
+    <!-- ===================================================================== -->
+    <div id="view-demo-auto" class="app-view hidden flex-1">
+        <section class="ambient-top pt-14 pb-12 sm:pt-20 sm:pb-16 px-6 sm:px-10 border-b border-white/[0.08]">
+            <div class="max-w-6xl mx-auto space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <button type="button" onclick="navigateToView('home', 'portfolio-demos')" class="font-mono text-xs text-gold hover:underline">
+                        &larr; Back to Main Studio
+                    </button>
+                    <a href="https://payhip.com/b/61vhD" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-full bg-gold hover:bg-goldLight text-obsidian font-display font-semibold text-xs">
+                        Book This $297 Upgrade &rarr;
+                    </a>
+                </div>
+
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-elevated border border-white/[0.08]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+                    <span class="font-mono text-[11px] tracking-[0.18em] text-silver uppercase">
+                        Case Study #01 &bull; Tier 02 Local Business Upgrade (Waterbury, CT)
+                    </span>
+                </div>
+
+                <h1 class="font-display font-bold text-3xl sm:text-5xl text-platinum tracking-[-0.025em] leading-[1.1] max-w-4xl">
+                    How A&amp;P Venturez Upgrades a Local Auto Shop From <span class="text-crimson">Losing Mobile Leads</span> to <span class="text-gold">Booking Jobs 24/7</span>
+                </h1>
+            </div>
+        </section>
+
+        <!-- Deliverable 01: Before vs After Website -->
+        <section class="py-16 sm:py-24 px-6 sm:px-10 border-b border-white/[0.08]">
+            <div class="max-w-6xl mx-auto space-y-10">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div class="space-y-2">
+                        <span class="font-mono text-xs uppercase tracking-[0.2em] text-gold">Deliverable 01 &bull; Website Overhaul</span>
+                        <h2 class="font-display font-bold text-2xl sm:text-4xl text-platinum">
+                            Interactive Before &amp; After Website
+                        </h2>
+                    </div>
+
+                    <div class="p-1.5 rounded-xl bg-elevated border border-white/[0.08] inline-grid grid-cols-2 gap-1.5 self-start">
+                        <button type="button" id="btn-view-before" onclick="switchSiteView('before')" class="px-5 py-2.5 rounded-lg font-mono text-xs font-medium transition-all bg-crimson text-white">
+                            BEFORE (Outdated Site)
+                        </button>
+                        <button type="button" id="btn-view-after" onclick="switchSiteView('after')" class="px-5 py-2.5 rounded-lg font-mono text-xs font-medium transition-all text-silver hover:text-platinum">
+                            AFTER (A&amp;P Upgrade)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid sm:grid-cols-4 gap-4">
+                    <div class="p-4 rounded-xl bg-elevated border border-white/[0.08]">
+                        <span class="font-mono text-[10px] uppercase tracking-wider text-silver block">Mobile Load Speed</span>
+                        <span id="stat-speed" class="font-display font-bold text-xl text-crimson mt-1 block">6.8 sec (Slow)</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-elevated border border-white/[0.08]">
+                        <span class="font-mono text-[10px] uppercase tracking-wider text-silver block">Click-to-Call Button</span>
+                        <span id="stat-call" class="font-display font-bold text-xl text-crimson mt-1 block">Missing / Buried</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-elevated border border-white/[0.08]">
+                        <span class="font-mono text-[10px] uppercase tracking-wider text-silver block">Online Estimate Form</span>
+                        <span id="stat-form" class="font-display font-bold text-xl text-crimson mt-1 block">Broken Mailto Link</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-elevated border border-white/[0.08]">
+                        <span class="font-mono text-[10px] uppercase tracking-wider text-silver block">Est. Lead Conversion</span>
+                        <span id="stat-conv" class="font-display font-bold text-xl text-crimson mt-1 block">1.2% (Leaking Calls)</span>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl border border-white/[0.12] overflow-hidden shadow-2xl bg-elevated">
+                    <div class="px-4 py-3 bg-[#121217] border-b border-white/[0.08] flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-crimson/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-gold/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-emeraldAccent/80"></span>
+                        </div>
+                        <div id="browser-url" class="px-4 py-1 rounded-md bg-obsidian border border-white/[0.08] font-mono text-xs text-silver truncate max-w-md w-full text-center">
+                            http://brasscityauto-oldsite.net (Not Secure)
+                        </div>
+                        <span id="browser-tag" class="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 rounded bg-crimson/20 text-crimson border border-crimson/40 shrink-0">
+                            Before
+                        </span>
+                    </div>
+
+                    <!-- BEFORE MOCKUP -->
+                    <div id="mockup-before" class="bg-[#E5E5E5] text-[#222222] p-6 sm:p-10 font-serif">
+                        <div class="max-w-4xl mx-auto bg-white border-2 border-[#999999] p-5 space-y-5">
+                            <div class="bg-[#002266] text-white p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                                <div>
+                                    <div class="text-xl font-bold uppercase tracking-wide">BRASS CITY AUTO &amp; BRAKE LLC</div>
+                                    <div class="text-xs text-[#CCCCCC]">Serving Waterbury CT Since 2004</div>
+                                </div>
+                                <div class="text-xs bg-[#CC0000] px-2 py-1 font-sans">CALL US: 203-555-0188 (Not clickable)</div>
+                            </div>
+                            <div class="bg-[#CCCCCC] px-3 py-1.5 text-xs font-sans flex flex-wrap gap-4 border border-[#888888] text-[#0000EE] underline">
+                                <span>Home</span><span>Services</span><span>About Us</span><span>Coupons (Expired 2021)</span><span>Contact</span>
+                            </div>
+                            <div class="grid sm:grid-cols-3 gap-4 text-xs font-sans leading-normal">
+                                <div class="sm:col-span-2 space-y-3">
+                                    <div class="bg-[#FFF3CD] border border-[#FFEEBA] p-2.5 text-[#856404]">
+                                        <strong>Notice:</strong> Our online appointment form is currently under maintenance. Please call during shop hours M-F 8am-5pm.
+                                    </div>
+                                    <p>Welcome to Brass City Auto and Brake. We do brakes, oil changes, exhaust, check engine lights, struts, shocks, timing belts, transmissions, radiators, alternators, batteries, and state emissions repairs.</p>
+                                </div>
+                                <div class="bg-[#F2F2F2] border border-[#BBBBBB] p-3 space-y-2">
+                                    <div class="font-bold underline">Shop Hours:</div>
+                                    <div>Mon-Fri: 8:00 - 5:00</div>
+                                    <div>Sat: Sometimes</div>
+                                    <div>Sun: Closed</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AFTER MOCKUP -->
+                    <div id="mockup-after" class="hidden bg-[#0B0D12] text-white p-6 sm:p-10 font-sans">
+                        <div class="max-w-5xl mx-auto rounded-2xl bg-[#11151F] border border-white/10 overflow-hidden">
+                            <div class="px-6 py-4 bg-[#0D1018] border-b border-white/10 flex flex-wrap items-center justify-between gap-4">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-lg bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-sm">BC</div>
+                                    <div>
+                                        <span class="font-bold text-sm tracking-wide block leading-none">BRASS CITY AUTO &amp; BRAKE</span>
+                                        <span class="text-[11px] text-amber-400">Waterbury, CT &bull; ASE Certified</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="hidden sm:inline-flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Open Today Until 6 PM
+                                    </span>
+                                    <span class="px-4 py-2 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs">
+                                        Tap to Call (203) 555-0188
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center">
+                                <div class="lg:col-span-7 space-y-5">
+                                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-amber-300">
+                                        &#9733; 4.9 Google Rating (180+ Waterbury Reviews)
+                                    </div>
+                                    <h3 class="font-display font-bold text-2xl sm:text-4xl leading-tight">
+                                        Honest Auto Repair &amp; Same-Day Brake Service in Waterbury
+                                    </h3>
+                                    <p class="text-sm text-slate-300 leading-relaxed">
+                                        Transparent upfront quotes before we turn a wrench. 24-month / 24,000-mile warranty on parts and labor.
+                                    </p>
+                                </div>
+                                <div class="lg:col-span-5 p-5 rounded-xl bg-[#0B0D12] border border-amber-500/30 space-y-3">
+                                    <div class="text-xs font-mono uppercase tracking-wider text-amber-400">60-Second Fast Estimate</div>
+                                    <div class="p-2.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-300">Vehicle Year / Make / Model</div>
+                                    <div class="p-2.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-300">Service Needed (Brakes, Check Engine, Oil...)</div>
+                                    <div class="w-full py-2.5 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs text-center">Send Me My Estimate</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deliverable 02 & 03 Summary -->
+        <section class="py-16 sm:py-24 px-6 sm:px-10">
+            <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-8">
+                <!-- Audit Card -->
+                <div class="rounded-2xl bg-elevated border border-white/[0.1] p-7 sm:p-9 space-y-6">
+                    <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+                        <div>
+                            <span class="font-mono text-xs text-gold uppercase">Deliverable 02 &bull; 1-Page Audit</span>
+                            <h3 class="font-display font-bold text-xl text-platinum mt-1">Conversion Score: 34 &rarr; 96</h3>
+                        </div>
+                        <button type="button" onclick="copyAuditPitch()" class="px-4 py-2 rounded-full bg-obsidian border border-gold/40 text-gold font-mono text-xs">
+                            Copy Pitch Email
+                        </button>
+                    </div>
+                    <ul class="space-y-3 text-sm text-silver">
+                        <li><strong class="text-crimson">Leak #01:</strong> Non-clickable phone number fixed with sticky 1-tap mobile call header.</li>
+                        <li><strong class="text-crimson">Leak #02:</strong> Dead appointment form replaced with 60-second text-quote capture.</li>
+                        <li><strong class="text-emeraldAccent">Result:</strong> Mobile load speed cut from 6.8s to 0.9s with visible 4.9-star Google proof.</li>
+                    </ul>
+                </div>
+
+                <!-- Infographic Card -->
+                <div class="rounded-2xl bg-gradient-to-b from-[#131620] to-[#0B0D12] border border-gold/40 p-7 sm:p-9 space-y-5">
+                    <span class="font-mono text-xs uppercase tracking-[0.2em] text-amber-400">Deliverable 03 &bull; Social &amp; Print Graphic</span>
+                    <h3 class="font-display font-bold text-xl text-white">
+                        5 Warning Signs Your Brakes Need Attention Before Winter
+                    </h3>
+                    <div class="space-y-2.5 text-xs text-slate-300">
+                        <div class="p-3 rounded-lg bg-white/[0.04] border border-white/[0.08]"><strong class="text-amber-400">01.</strong> High-pitched squealing when braking (wear indicators active)</div>
+                        <div class="p-3 rounded-lg bg-white/[0.04] border border-white/[0.08]"><strong class="text-amber-400">02.</strong> Steering wheel vibration on highway stops (warped rotors)</div>
+                        <div class="p-3 rounded-lg bg-white/[0.04] border border-white/[0.08]"><strong class="text-amber-400">03.</strong> Soft or spongy brake pedal (air or moisture in brake lines)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 4: DEMO 02 — CONTRACTOR + 24/7 AI ASSISTANT ($497 PACK)          -->
+    <!-- ===================================================================== -->
+    <div id="view-demo-contractor" class="app-view hidden flex-1">
+        <section class="ambient-top pt-14 pb-12 sm:pt-20 sm:pb-16 px-6 sm:px-10 border-b border-white/[0.08]">
+            <div class="max-w-6xl mx-auto space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <button type="button" onclick="navigateToView('home', 'portfolio-demos')" class="font-mono text-xs text-gold hover:underline">
+                        &larr; Back to Main Studio
+                    </button>
+                    <a href="https://payhip.com/b/61vhD" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-full bg-gold hover:bg-goldLight text-obsidian font-display font-semibold text-xs">
+                        Book Growth Engine ($497) &rarr;
+                    </a>
+                </div>
+
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-elevated border border-white/[0.08]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+                    <span class="font-mono text-[11px] tracking-[0.18em] text-silver uppercase">
+                        Case Study #02 &bull; Tier 03 Automated Growth Engine (Thomaston &amp; Southington, CT)
+                    </span>
+                </div>
+
+                <h1 class="font-display font-bold text-3xl sm:text-5xl text-platinum tracking-[-0.025em] leading-[1.1] max-w-4xl">
+                    How a Local Contractor Captures <span class="text-gold">After-Hours Emergency Jobs</span> With a 24/7 AI Assistant
+                </h1>
+            </div>
+        </section>
+
+        <section class="py-16 sm:py-24 px-6 sm:px-10">
+            <div class="max-w-6xl mx-auto space-y-12">
+                <!-- Fast-Quote Contractor Landing Page -->
+                <div class="rounded-2xl border border-white/[0.12] overflow-hidden bg-[#0D1117] shadow-2xl">
+                    <div class="px-6 py-4 bg-[#161B22] border-b border-white/10 flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-lg bg-sky-500 text-slate-950 font-bold flex items-center justify-center text-sm">NV</div>
+                            <div>
+                                <span class="font-bold text-sm text-white block leading-none">NAUGATUCK VALLEY GARAGE DOORS</span>
+                                <span class="text-[11px] text-sky-400">24/7 Emergency Spring &amp; Opener Repair &bull; CT Lic #HIC.065412</span>
+                            </div>
+                        </div>
+                        <span class="px-4 py-2 rounded-lg bg-sky-500 text-slate-950 font-bold text-xs">Call (860) 555-0142</span>
+                    </div>
+
+                    <div class="p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-7 space-y-4">
+                            <h3 class="font-display font-bold text-2xl sm:text-4xl text-white leading-tight">
+                                Broken Garage Door Spring or Stuck Door? Fixed Today.
+                            </h3>
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                Fully stocked trucks on the road 7 days a week across Waterbury, Thomaston &amp; Southington. Upfront flat-rate pricing before work begins.
+                            </p>
+                        </div>
+                        <div class="lg:col-span-5 p-5 rounded-2xl bg-[#161B22] border border-sky-500/30 space-y-3">
+                            <div class="text-xs font-mono uppercase tracking-wider text-sky-400">Instant Dispatch Request</div>
+                            <div class="p-2.5 rounded-lg bg-black/40 border border-white/10 text-xs text-slate-300">Issue: Broken Spring / Cable / Opener</div>
+                            <button type="button" onclick="showToast('Automated Workflow Triggered: Lead logged & owner notified!')" class="w-full py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs transition-colors">
+                                Test Instant Lead Routing &rarr;
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive 24/7 AI Receptionist Demo -->
+                <div class="grid lg:grid-cols-12 gap-8 items-start">
+                    <div class="lg:col-span-7 rounded-2xl bg-elevated border border-white/[0.1] overflow-hidden flex flex-col">
+                        <div class="px-6 py-4 bg-[#121217] border-b border-white/[0.08] flex items-center justify-between">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emeraldAccent"></span>
+                                <span class="font-display font-semibold text-sm text-platinum">NV Doors AI Assistant (24/7 Active)</span>
+                            </div>
+                            <span class="font-mono text-[11px] text-silver">Avg Reply: 1.2s</span>
+                        </div>
+
+                        <div id="ai-chat-log" class="p-6 space-y-4 min-h-[260px] max-h-[340px] overflow-y-auto text-sm">
+                            <div class="flex items-start gap-3">
+                                <span class="px-2 py-1 rounded bg-gold/20 text-gold font-mono text-[10px] shrink-0 mt-0.5">AI</span>
+                                <div class="p-3.5 rounded-2xl rounded-tl-none bg-obsidian border border-white/[0.08] text-platinum leading-relaxed">
+                                    Hi! I'm the 24/7 virtual assistant for Naugatuck Valley Garage Doors. Tap a question below to see how I answer customer inquiries and capture leads automatically:
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="px-6 py-4 bg-obsidian border-t border-white/[0.08] flex flex-wrap gap-2">
+                            <button type="button" onclick="askAiDemo('How much does a broken spring repair cost?')" class="px-3 py-1.5 rounded-full bg-elevated hover:border-gold/60 border border-white/[0.1] text-xs text-silver hover:text-platinum transition-colors">
+                                "How much for a broken spring?"
+                            </button>
+                            <button type="button" onclick="askAiDemo('My car is trapped inside—can someone come tonight?')" class="px-3 py-1.5 rounded-full bg-elevated hover:border-gold/60 border border-white/[0.1] text-xs text-silver hover:text-platinum transition-colors">
+                                "Car trapped inside tonight?"
+                            </button>
+                            <button type="button" onclick="askAiDemo('Do you service Southington and Waterbury?')" class="px-3 py-1.5 rounded-full bg-elevated hover:border-gold/60 border border-white/[0.1] text-xs text-silver hover:text-platinum transition-colors">
+                                "Service Southington &amp; Waterbury?"
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="p-6 rounded-2xl bg-elevated border border-white/[0.08] space-y-2">
+                            <span class="font-mono text-xs text-gold uppercase">01 &bull; 24/7 Lead Capture</span>
+                            <h3 class="font-display font-semibold text-lg text-platinum">Zero Missed Calls After Hours</h3>
+                            <p class="text-sm text-silver leading-relaxed">Answers pricing &amp; service-area questions immediately and texts emergency leads straight to the owner.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl bg-elevated border border-white/[0.08] space-y-2">
+                            <span class="font-mono text-xs text-gold uppercase">02 &bull; Staff Training Deck</span>
+                            <h3 class="font-display font-semibold text-lg text-platinum">Onboarding Flashcards &amp; Quizzes</h3>
+                            <p class="text-sm text-silver leading-relaxed">Includes technician safety flashcards and quoting quizzes so new hires train faster.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 5: DEMO 03 — $149 IDEA LAUNCHPAD PACK                            -->
+    <!-- ===================================================================== -->
+    <div id="view-demo-idea" class="app-view hidden flex-1">
+        <section class="ambient-top pt-14 pb-12 sm:pt-20 sm:pb-16 px-6 sm:px-10 border-b border-white/[0.08]">
+            <div class="max-w-6xl mx-auto space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <button type="button" onclick="navigateToView('home', 'portfolio-demos')" class="font-mono text-xs text-gold hover:underline">
+                        &larr; Back to Main Studio
+                    </button>
+                    <a href="https://payhip.com/b/61vhD" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 rounded-full bg-gold hover:bg-goldLight text-obsidian font-display font-semibold text-xs">
+                        Launch Your Idea ($149) &rarr;
+                    </a>
+                </div>
+
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-elevated border border-white/[0.08]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+                    <span class="font-mono text-[11px] tracking-[0.18em] text-silver uppercase">
+                        Case Study #03 &bull; Tier 01 Idea Launchpad (48-Hour Turnaround)
+                    </span>
+                </div>
+
+                <h1 class="font-display font-bold text-3xl sm:text-5xl text-platinum tracking-[-0.025em] leading-[1.1] max-w-4xl">
+                    From a 3-Sentence Voice Note to a <span class="text-gold">Partner-Ready Launch Pack</span> in 48 Hours
+                </h1>
+            </div>
+        </section>
+
+        <section class="py-16 sm:py-24 px-6 sm:px-10 space-y-16">
+            <div class="max-w-6xl mx-auto space-y-16">
+                <!-- Strategy Mind Map -->
+                <div class="rounded-2xl bg-elevated border border-white/[0.1] p-7 sm:p-10 space-y-8">
+                    <div class="space-y-1">
+                        <span class="font-mono text-xs uppercase tracking-[0.2em] text-gold">Deliverable 01 &bull; Strategy Mind Map</span>
+                        <h2 class="font-display font-bold text-2xl text-platinum">ShineClub CT — Monthly Mobile Auto Detailing</h2>
+                    </div>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="p-5 rounded-xl bg-obsidian border border-white/[0.08] space-y-2">
+                            <span class="font-mono text-xs text-gold">01 &bull; Target Market</span>
+                            <h4 class="font-display font-semibold text-sm text-platinum">Busy Commuters &amp; Families</h4>
+                            <p class="text-xs text-silver leading-relaxed">Homeowners &amp; office parks in Fairfield &amp; New Haven counties with 2+ vehicles.</p>
+                        </div>
+                        <div class="p-5 rounded-xl bg-obsidian border border-white/[0.08] space-y-2">
+                            <span class="font-mono text-xs text-gold">02 &bull; Revenue Model</span>
+                            <h4 class="font-display font-semibold text-sm text-platinum">3-Tier Recurring Plans</h4>
+                            <p class="text-xs text-silver leading-relaxed">$89/mo Express, $149/mo Full Detail, plus $299 seasonal ceramic coat upsell.</p>
+                        </div>
+                        <div class="p-5 rounded-xl bg-obsidian border border-white/[0.08] space-y-2">
+                            <span class="font-mono text-xs text-gold">03 &bull; Acquisition</span>
+                            <h4 class="font-display font-semibold text-sm text-platinum">Neighborhood Route Density</h4>
+                            <p class="text-xs text-silver leading-relaxed">20% neighbor discount when 3+ driveways on the same street book the same day.</p>
+                        </div>
+                        <div class="p-5 rounded-xl bg-obsidian border border-white/[0.08] space-y-2">
+                            <span class="font-mono text-xs text-gold">04 &bull; 30-Day Launch</span>
+                            <h4 class="font-display font-semibold text-sm text-platinum">First 25 Members Goal</h4>
+                            <p class="text-xs text-silver leading-relaxed">$2,225/mo predictable recurring baseline before hiring a second van tech.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive 6-Slide Executive Deck -->
+                <div class="space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                        <div class="space-y-1">
+                            <span class="font-mono text-xs uppercase tracking-[0.2em] text-gold">Deliverable 02 &bull; Interactive Slide Deck</span>
+                            <h2 class="font-display font-bold text-2xl sm:text-3xl text-platinum">6-Slide Executive Pitch Deck Preview</h2>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="changeSlide(-1)" class="px-4 py-2 rounded-lg bg-elevated hover:bg-elevatedHover border border-white/[0.1] font-mono text-xs text-platinum">&larr; Prev</button>
+                            <span id="slide-counter" class="px-3 py-2 font-mono text-xs text-gold">Slide 1 / 6</span>
+                            <button type="button" onclick="changeSlide(1)" class="px-4 py-2 rounded-lg bg-gold text-obsidian font-mono font-semibold text-xs">Next &rarr;</button>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl bg-gradient-to-br from-[#12131A] to-[#090A0E] border border-gold/35 p-8 sm:p-12 min-h-[280px] flex flex-col justify-between gap-8 shadow-2xl">
+                        <div class="flex items-center justify-between">
+                            <span id="slide-kicker" class="font-mono text-xs uppercase tracking-[0.2em] text-gold">SLIDE 01 &bull; THE OPPORTUNITY</span>
+                            <span class="font-grotesk font-bold text-xs tracking-[0.14em] text-silver">SHINECLUB CT</span>
+                        </div>
+                        <div class="space-y-3 max-w-3xl">
+                            <h3 id="slide-title" class="font-display font-bold text-2xl sm:text-3xl text-platinum leading-tight">
+                                Car Owners Hate Waiting 3 Hours at Traditional Car Washes
+                            </h3>
+                            <p id="slide-body" class="text-sm sm:text-base text-silver leading-relaxed">
+                                ShineClub CT brings full-service exterior and interior detailing directly to the customer's driveway or office parking lot on a predictable monthly membership.
+                            </p>
+                        </div>
+                        <div id="slide-metrics" class="grid sm:grid-cols-3 gap-4 pt-4 border-t border-white/[0.08]"></div>
+                    </div>
+                </div>
+
+                <!-- Audio Overview Briefing -->
+                <div class="rounded-2xl bg-elevated border border-white/[0.1] p-7 sm:p-10 space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-white/[0.08]">
+                        <div>
+                            <span class="font-mono text-xs text-gold uppercase">Deliverable 03 &bull; Narrated Audio Overview</span>
+                            <h3 class="font-display font-bold text-xl text-platinum mt-1">
+                                "ShineClub CT: How We Reach $10K/Month With Two Mobile Vans"
+                            </h3>
+                        </div>
+                        <button type="button" id="audio-toggle-btn" onclick="toggleAudioSim()" class="px-6 py-3 rounded-full bg-gold hover:bg-goldLight text-obsidian font-display font-semibold text-xs transition-colors self-start sm:self-auto">
+                            &#9654; Play Sample Progress
+                        </button>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="w-full h-2 rounded-full bg-obsidian overflow-hidden border border-white/[0.08]">
+                            <div id="audio-progress" class="h-full bg-gold transition-all duration-300" style="width: 18%"></div>
+                        </div>
+                        <div class="flex justify-between font-mono text-[11px] text-silver">
+                            <span id="audio-time">00:24</span>
+                            <span>02:15 Total Runtime</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- UNIFIED FOOTER                                                        -->
+    <!-- ===================================================================== -->
+    <footer class="border-t border-white/[0.08] py-10 px-6 sm:px-10 mt-auto">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <button type="button" onclick="navigateToView('home')" class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-md border border-gold/40 bg-elevated flex items-center justify-center">
+                    <svg class="w-4 h-4" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M4 25L12 7L17.5 19.5" stroke="#D6B36A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7.5 18.5H15.5" stroke="#D6B36A" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M18.5 7H24C26.4853 7 28.5 9.01472 28.5 11.5C28.5 13.9853 26.4853 16 24 16H18.5V25" stroke="#F5F5F7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <span class="font-grotesk font-bold text-sm tracking-[0.14em] text-platinum">
+                    A&amp;P <span class="text-gold">VENTUREZ</span>
+                </span>
+            </button>
+
+            <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-silver">
+                <button type="button" onclick="navigateToView('home')" class="hover:text-gold transition-colors">Studio</button>
+                <button type="button" onclick="navigateToView('intake')" class="hover:text-gold transition-colors">60-Sec Intake</button>
+                <button type="button" onclick="navigateToView('demo-auto')" class="hover:text-gold transition-colors">Demo 01</button>
+                <button type="button" onclick="navigateToView('demo-contractor')" class="hover:text-gold transition-colors">Demo 02</button>
+                <button type="button" onclick="navigateToView('demo-idea')" class="hover:text-gold transition-colors">Demo 03</button>
+                <span class="text-white/20">&bull;</span>
+                <button type="button" onclick="copyDirectEmail()" class="hover:text-gold transition-colors">venturez.ap@gmail.com</button>
+                <span class="text-white/20">&bull;</span>
+                <span>&copy; <span id="current-year"></span> A&amp;P Venturez</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===================================================================== -->
+    <!-- UNIFIED INTERACTIVE ENGINE                                            -->
+    <!-- ===================================================================== -->
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // View Router (Switches seamlessly between all 5 pages inside one file)
+        const viewSubtitles = {
+            'home': 'Digital Studio',
+            'intake': '60-Second Client Intake',
+            'demo-auto': 'Demo #01 • Auto Repair',
+            'demo-contractor': 'Demo #02 • Contractor AI',
+            'demo-idea': 'Demo #03 • Idea Launchpad'
+        };
+
+        function navigateToView(viewName, sectionId = null) {
+            document.querySelectorAll('.app-view').forEach(el => el.classList.add('hidden'));
+            const targetView = document.getElementById(`view-${viewName}`);
+            if (targetView) {
+                targetView.classList.remove('hidden');
+            }
+
+            document.getElementById('header-subtitle').textContent = viewSubtitles[viewName] || 'Digital Studio';
+            const backBtn = document.getElementById('back-to-home-btn');
+            if (viewName === 'home') {
+                backBtn.classList.add('hidden');
+                backBtn.classList.remove('inline-flex');
+            } else {
+                backBtn.classList.remove('hidden');
+                backBtn.classList.add('inline-flex');
+            }
+
+            if (sectionId) {
+                setTimeout(() => {
+                    const sec = document.getElementById(sectionId);
+                    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 40);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Fixed Packages Data with Direct Payhip Checkout URLs
+        const servicePackages = [
+            {
+                id: 'tier-1',
+                tierLabel: 'Tier 01',
+                name: 'The Idea Launchpad',
+                price: '$149',
+                billing: 'One-time',
+                turnaround: '48-Hour Turnaround',
+                popular: false,
+                trackHint: 'New Idea',
+                payhipUrl: 'https://payhip.com/b/61vhD',
+                audience: 'For entrepreneurs, creators, or side-hustlers organizing or pitching a new concept.',
+                features: [
+                    '1 Strategy Mind Map organizing your model & launch steps',
+                    '1 Executive Slide Deck (6–8 slides) ready for partners or investors',
+                    '1 Audio or Video Overview summarizing your concept'
+                ]
+            },
+            {
+                id: 'tier-2',
+                tierLabel: 'Tier 02',
+                name: 'The Local Business Upgrade',
+                price: '$297',
+                billing: 'One-time',
+                turnaround: '3–4 Day Turnaround',
+                popular: true,
+                trackHint: 'Existing Business',
+                payhipUrl: 'https://payhip.com/b/61vhD',
+                audience: 'For local businesses (auto repair, contractors, salons, realtors) upgrading outdated sites.',
+                features: [
+                    '1 Full Website Audit Report identifying leaks & mobile fixes',
+                    '1 Custom Landing Page Build or Full Website Repair',
+                    '1 Custom Promotional Infographic or Social Media Flyer'
+                ]
+            },
+            {
+                id: 'tier-3',
+                tierLabel: 'Tier 03',
+                name: 'The Automated Growth Engine',
+                price: '$497',
+                billing: 'One-time',
+                turnaround: '5–7 Day Turnaround',
+                popular: false,
+                trackHint: 'Existing Business',
+                payhipUrl: 'https://payhip.com/b/61vhD',
+                audience: 'For established owners automating lead capture, customer support, and team onboarding.',
+                features: [
+                    'Everything included in Tier 02 (Website Upgrade + Audit + Infographic)',
+                    '1 Custom 24/7 AI Assistant trained on your services & pricing',
+                    '1 Automated Lead Capture Workflow straight to email or sheet',
+                    '1 Set of Staff Training Flashcards & Onboarding Quizzes'
+                ]
+            }
+        ];
+
+        // 9 Capabilities Data
+        const deliverables = [
+            {
+                id: 'websites',
+                num: '01',
+                title: 'Custom Websites & Site Repair',
+                description: 'High-converting flagship websites, mobile rebuilds, and rapid fixes that turn visitors into paying customers.',
+                icon: `<svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>`
+            },
+            {
+                id: 'decks',
+                num: '02',
+                title: 'Executive Slide Decks & Pitch Presentations',
+                description: 'Investor-ready pitch decks, client proposals, and visual presentation systems structured to close deals.',
+                icon: `<svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`
+            },
+            {
+                id: 'audio',
+                num: '03',
+                title: 'Audio Overviews & Podcasts',
+                description: 'Studio-grade narrated executive briefings, brand podcasts, and voice-over explainers crafted from your notes.',
+                icon: `<svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>`
+            },
+            {
+                id: 'video',
+                num: '04',
+                title: 'Video Overviews & Explainer Visuals',
+                description: 'Crisp visual walkthroughs, product demos, and promotional video summaries designed for immediate clarity.',
+                icon: `<svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`
+            },
+            {
+                id: 'mindmaps',
+                num: '05',
+                title: 'Strategy Mind Maps & Blueprints',
+                description: 'Visual architecture mapping your business model, customer funnels, and step-by-step execution roadmap.',
+                icon: `<svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M12 7.5V12l-5.5 5"/><path d="M12 12l5.5 5"/></svg>`
+            },
+            {
+                id: 'reports',
+                num: '06',
+                title: 'Comprehensive Reports & Brand Audits',
+                description: 'Deep-dive diagnostics uncovering website leaks, competitor gaps, and actionable revenue opportunities.',
+                icon: `<svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`
+            },
+            {
+                id: 'infographics',
+                num: '07',
+                title: 'Custom Infographics & Visual One-Pagers',
+                description: 'High-impact visual summaries and comparison graphics built for social campaigns, sales sheets, and proposals.',
+                icon: `<svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`
+            },
+            {
+                id: 'training',
+                num: '08',
+                title: 'Training Flashcards & Interactive Quizzes',
+                description: 'Turn standard operating procedures and handbooks into interactive onboarding modules for your team.',
+                icon: `<svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`
+            },
+            {
+                id: 'automation',
+                num: '09',
+                title: 'Workflow Automation & 24/7 AI Assistants',
+                description: 'Custom AI receptionists and automated lead-routing pipelines that answer questions and capture bookings around the clock.',
+                icon: `<svg class="w-5 h-5 text-gold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`
+            }
+        ];
+
+        const trackConfigs = {
+            idea: {
+                summary: "You don't need a logo, deck, or technical plan to start. Bring a rough voice memo or concept note—we turn it into a credible, launch-ready brand ecosystem.",
+                title: 'Concept-to-Market Launch Architecture',
+                badge: 'New Venture Track',
+                input: 'A rough concept, voice note, bullet list, or market problem you want to solve.',
+                build: 'We structure your positioning, map the customer journey, produce executive pitch & audio assets, and engineer a flagship web presence.',
+                checklistIds: ['mindmaps', 'decks', 'audio', 'websites'],
+                defaultAssets: ['Strategy Mind Map', 'Investor Pitch Deck', 'Audio Overview', 'Flagship Launch Site']
+            },
+            business: {
+                summary: 'Already operating? We diagnose where your current site or workflow is leaking leads and deploy high-converting upgrades, brand media, and 24/7 automation.',
+                title: 'Digital Upgrade & Lead-Engine Architecture',
+                badge: 'Established Business Track',
+                input: 'Your existing website URL, service list, customer FAQs, or current operational bottlenecks.',
+                build: 'We audit your digital footprint, rebuild slow or outdated pages, produce high-trust visual assets, and wire automated lead capture.',
+                checklistIds: ['reports', 'websites', 'infographics', 'automation'],
+                defaultAssets: ['Full Brand & Site Audit', 'High-Converting Redesign', 'Promotional Infographic', '24/7 AI Lead Capture']
+            }
+        };
+
+        let activeTrack = 'idea';
+        let selectedPackageId = null;
+        const selectedScope = new Set();
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'px-4 py-2.5 rounded-full bg-elevated border border-gold/50 text-platinum font-mono text-xs shadow-lg transition-opacity duration-300';
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2200);
+        }
+
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            let success = false;
+            try { success = document.execCommand('copy'); } catch (e) { success = false; }
+            document.body.removeChild(textarea);
+            return success;
+        }
+
+        function copyDirectEmail() {
+            if (copyToClipboard('venturez.ap@gmail.com')) {
+                showToast('Copied venturez.ap@gmail.com');
+            }
+        }
+
+        function selectPackage(pkgId, shouldScroll = true) {
+            const pkg = servicePackages.find(p => p.id === pkgId);
+            if (!pkg) return;
+
+            if (selectedPackageId === pkgId && !shouldScroll) {
+                selectedPackageId = null;
+                showToast(`Removed ${pkg.name}`);
+            } else {
+                selectedPackageId = pkgId;
+                setTrack(pkg.trackHint === 'Existing Business' ? 'business' : 'idea');
+                showToast(`Selected ${pkg.name} (${pkg.price})`);
+            }
+
+            renderAll();
+
+            if (shouldScroll) {
+                navigateToView('home', 'start-build');
+            }
+        }
+
+        function clearSelectedPackage() {
+            selectedPackageId = null;
+            renderAll();
+            showToast('Removed selected package');
+        }
+
+        function toggleDeliverable(id, silent = false) {
+            const item = deliverables.find(d => d.id === id);
+            if (!item) return;
+
+            if (selectedScope.has(id)) {
+                selectedScope.delete(id);
+                if (!silent) showToast(`Removed ${item.num} ${item.title}`);
+            } else {
+                selectedScope.add(id);
+                if (!silent) showToast(`Added ${item.num} ${item.title}`);
+            }
+            renderAll();
+        }
+
+        function clearAllServices() {
+            selectedPackageId = null;
+            selectedScope.clear();
+            renderAll();
+            showToast('Cleared selected scope');
+        }
+
+        function setTrack(track) {
+            activeTrack = track === 'business' ? 'business' : 'idea';
+            const btnIdea = document.getElementById('track-btn-idea');
+            const btnBusiness = document.getElementById('track-btn-business');
+
+            if (activeTrack === 'idea') {
+                btnIdea.className = 'py-3 px-4 rounded-lg text-xs sm:text-sm font-display font-semibold transition-all bg-gold text-obsidian';
+                btnBusiness.className = 'py-3 px-4 rounded-lg text-xs sm:text-sm font-display font-semibold transition-all text-silver hover:text-platinum';
+                document.getElementById('client-track').value = 'New Idea';
+            } else {
+                btnBusiness.className = 'py-3 px-4 rounded-lg text-xs sm:text-sm font-display font-semibold transition-all bg-gold text-obsidian';
+                btnIdea.className = 'py-3 px-4 rounded-lg text-xs sm:text-sm font-display font-semibold transition-all text-silver hover:text-platinum';
+                document.getElementById('client-track').value = 'Existing Business';
+            }
+            renderTransformationPreview();
+        }
+
+        function syncSelectToTrack(val) {
+            setTrack(val === 'Existing Business' ? 'business' : 'idea');
+        }
+
+        function renderPackagesGrid() {
+            const grid = document.getElementById('packages-grid');
+            if (!grid) return;
+
+            grid.innerHTML = servicePackages.map(pkg => {
+                const isSelected = selectedPackageId === pkg.id;
+                const borderClass = isSelected
+                    ? 'border-gold bg-[#12110E] shadow-[0_0_0_1px_rgba(214,179,106,0.28)]'
+                    : pkg.popular
+                        ? 'border-gold/45 bg-elevated hover:border-gold'
+                        : 'border-white/[0.08] bg-elevated hover:border-gold/35';
+
+                return `
+                    <article class="relative rounded-2xl border ${borderClass} p-7 sm:p-9 flex flex-col justify-between gap-8 transition-all">
+                        ${pkg.popular ? `
+                            <div class="absolute -top-3.5 right-6">
+                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gold text-obsidian font-mono text-[10px] font-semibold uppercase tracking-[0.18em] shadow-md">
+                                    Most Popular
+                                </span>
+                            </div>
+                        ` : ''}
+
+                        <div class="space-y-6">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="font-mono text-xs uppercase tracking-[0.18em] text-gold">${pkg.tierLabel}</span>
+                                <span class="px-3 py-1 rounded-full bg-obsidian border border-white/[0.08] font-mono text-[11px] text-silver">
+                                    ${pkg.turnaround}
+                                </span>
+                            </div>
+
+                            <div class="space-y-3">
+                                <h3 class="font-display font-bold text-2xl text-platinum tracking-tight">${pkg.name}</h3>
+                                <div class="flex items-baseline gap-2">
+                                    <span class="font-display font-bold text-4xl sm:text-5xl text-platinum tracking-tight">${pkg.price}</span>
+                                    <span class="font-mono text-xs text-silver uppercase tracking-wider">/ ${pkg.billing}</span>
+                                </div>
+                                <p class="text-sm text-silver leading-relaxed pt-1">${pkg.audience}</p>
+                            </div>
+
+                            <div class="h-px bg-white/[0.08]"></div>
+
+                            <ul class="space-y-3.5">
+                                ${pkg.features.map(feature => `
+                                    <li class="flex items-start gap-3 text-sm text-platinum/90 leading-snug">
+                                        <span class="mt-0.5 w-4 h-4 rounded-full bg-gold/15 border border-gold/40 text-gold flex items-center justify-center shrink-0 text-[10px] font-bold">&#10003;</span>
+                                        <span>${feature}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="pt-2 space-y-2.5">
+                            <a href="${pkg.payhipUrl}" target="_blank" rel="noopener noreferrer" class="block text-center w-full py-3.5 px-6 rounded-full font-display font-semibold text-sm tracking-tight transition-all ${
+                                pkg.popular
+                                    ? 'bg-gold hover:bg-goldLight text-obsidian'
+                                    : 'bg-emeraldAccent hover:opacity-90 text-obsidian'
+                            }">
+                                Pay &amp; Book Now (${pkg.price}) &rarr;
+                            </a>
+                            <button type="button" onclick="selectPackage('${pkg.id}', true)" class="w-full py-2.5 px-5 rounded-full bg-obsidian hover:bg-white/[0.04] border border-white/[0.12] hover:border-gold/50 text-silver hover:text-platinum font-mono text-xs transition-colors">
+                                ${isSelected ? '✓ Added to Custom Brief' : '+ Add to Custom Brief First'}
+                            </button>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function renderBentoGrid() {
+            const grid = document.getElementById('services-bento-grid');
+            if (!grid) return;
+
+            grid.innerHTML = deliverables.map(item => {
+                const isSelected = selectedScope.has(item.id);
+                return `
+                    <article class="service-card ${isSelected ? 'service-card-active' : ''} rounded-2xl bg-elevated border border-white/[0.08] p-7 flex flex-col justify-between gap-6">
+                        <div class="space-y-5">
+                            <div class="flex items-center justify-between">
+                                <div class="w-10 h-10 rounded-xl bg-obsidian border border-white/[0.08] flex items-center justify-center">
+                                    ${item.icon}
+                                </div>
+                                <span class="font-mono text-xs text-silver">${item.num}</span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <h3 class="font-display font-semibold text-lg text-platinum leading-snug">${item.title}</h3>
+                                <p class="text-sm text-silver leading-relaxed">${item.description}</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/[0.06] flex items-center justify-between">
+                            <span class="font-mono text-[11px] uppercase tracking-wider ${isSelected ? 'text-gold' : 'text-silver/60'}">
+                                ${isSelected ? 'In Your Scope' : 'Optional Add-On'}
+                            </span>
+                            <button type="button" onclick="toggleDeliverable('${item.id}')" class="px-3.5 py-1.5 rounded-full font-mono text-xs transition-all ${
+                                isSelected
+                                    ? 'bg-gold text-obsidian font-medium'
+                                    : 'bg-obsidian hover:border-gold/50 text-platinum border border-white/[0.12]'
+                            }">
+                                ${isSelected ? '✓ Included' : '+ Add to Scope'}
+                            </button>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function renderTransformationPreview() {
+            const cfg = trackConfigs[activeTrack];
+            document.getElementById('track-summary').textContent = cfg.summary;
+            document.getElementById('blueprint-title').textContent = cfg.title;
+            document.getElementById('blueprint-badge').innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-gold"></span><span>${cfg.badge}</span>`;
+            document.getElementById('blueprint-input').textContent = cfg.input;
+            document.getElementById('blueprint-build').textContent = cfg.build;
+
+            const checklistEl = document.getElementById('track-checklist');
+            checklistEl.innerHTML = cfg.checklistIds.map(id => {
+                const item = deliverables.find(d => d.id === id);
+                if (!item) return '';
+                const isSelected = selectedScope.has(id);
+                return `
+                    <button type="button" onclick="toggleDeliverable('${id}')" class="w-full text-left p-3.5 rounded-xl bg-elevated hover:bg-elevatedHover border ${
+                        isSelected ? 'border-gold/60' : 'border-white/[0.08]'
+                    } flex items-center justify-between gap-3 transition-colors">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <span class="font-mono text-xs text-gold shrink-0">${item.num}</span>
+                            <span class="text-sm text-platinum truncate">${item.title}</span>
+                        </div>
+                        <span class="font-mono text-[11px] shrink-0 ${isSelected ? 'text-gold' : 'text-silver'}">
+                            ${isSelected ? '✓ Added' : '+ Add'}
+                        </span>
+                    </button>
+                `;
+            }).join('');
+
+            const selectedTitles = deliverables.filter(d => selectedScope.has(d.id)).map(d => d.title);
+            const displayAssets = selectedTitles.length > 0 ? selectedTitles : cfg.defaultAssets;
+            document.getElementById('blueprint-asset-count').textContent = `${displayAssets.length} Deliverable${displayAssets.length === 1 ? '' : 's'}`;
+            document.getElementById('blueprint-outputs').innerHTML = displayAssets.map(label => `
+                <span class="px-3 py-1.5 rounded-full bg-elevated border border-white/[0.1] text-xs font-medium text-platinum">${label}</span>
+            `).join('');
+        }
+
+        function renderFormScope() {
+            const chosenPkg = servicePackages.find(p => p.id === selectedPackageId);
+            const chosenAddons = deliverables.filter(d => selectedScope.has(d.id));
+            const count = (chosenPkg ? 1 : 0) + chosenAddons.length;
+
+            // Update Payhip CTA in the brief form to reflect selected package
+            const directPayBtn = document.getElementById('direct-payhip-btn');
+            if (directPayBtn) {
+                if (chosenPkg) {
+                    directPayBtn.href = chosenPkg.payhipUrl;
+                    directPayBtn.innerHTML = `Pay &amp; Book ${chosenPkg.name} (${chosenPkg.price}) &rarr;`;
+                } else {
+                    directPayBtn.href = 'https://payhip.com/b/61vhD';
+                    directPayBtn.innerHTML = 'Pay &amp; Lock In Spot (Payhip) &rarr;';
+                }
+            }
+
+            const navBadge = document.getElementById('nav-scope-badge');
+            if (count > 0) {
+                navBadge.textContent = count;
+                navBadge.classList.remove('hidden');
+                navBadge.classList.add('inline-flex');
+            } else {
+                navBadge.classList.add('hidden');
+                navBadge.classList.remove('inline-flex');
+            }
+
+            document.getElementById('form-scope-count').textContent = count;
+            const clearBtn = document.getElementById('clear-scope-btn');
+            clearBtn.classList.toggle('hidden', count === 0);
+
+            const tagsContainer = document.getElementById('active-scope-tags');
+            if (count === 0) {
+                tagsContainer.innerHTML = `<span class="text-xs text-silver">No package or deliverables locked in yet — pick a fixed package above or quick-select below.</span>`;
+            } else {
+                const pkgTagHtml = chosenPkg ? `
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-gold text-obsidian text-xs font-display font-semibold">
+                        <span class="font-mono text-[11px] uppercase">${chosenPkg.tierLabel}</span>
+                        <span>${chosenPkg.name} (${chosenPkg.price})</span>
+                        <button type="button" onclick="clearSelectedPackage()" class="text-obsidian/80 hover:text-obsidian font-bold leading-none pl-0.5">&times;</button>
+                    </span>
+                ` : '';
+
+                const addonTagsHtml = chosenAddons.map(item => `
+                    <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-elevated border border-gold/60 text-xs font-medium text-platinum">
+                        <span class="font-mono text-gold">${item.num}</span>
+                        <span>${item.title}</span>
+                        <button type="button" onclick="toggleDeliverable('${item.id}')" class="text-gold hover:text-platinum font-bold leading-none pl-0.5">&times;</button>
+                    </span>
+                `).join('');
+
+                tagsContainer.innerHTML = pkgTagHtml + addonTagsHtml;
+            }
+
+            const quickPills = document.getElementById('quick-select-pills');
+            const pkgPillsHtml = servicePackages.map(pkg => {
+                const isSelected = selectedPackageId === pkg.id;
+                return `
+                    <button type="button" onclick="selectPackage('${pkg.id}', false)" class="px-3 py-1.5 rounded-full font-mono text-[11px] transition-colors ${
+                        isSelected ? 'bg-gold text-obsidian font-semibold' : 'bg-obsidian text-gold border border-gold/40 hover:border-gold'
+                    }">
+                        ${isSelected ? '✓' : '+'} ${pkg.name} (${pkg.price})
+                    </button>
+                `;
+            }).join('');
+
+            const addonPillsHtml = deliverables.map(item => {
+                const isSelected = selectedScope.has(item.id);
+                return `
+                    <button type="button" onclick="toggleDeliverable('${item.id}')" class="px-3 py-1.5 rounded-full font-mono text-[11px] transition-colors ${
+                        isSelected ? 'bg-gold text-obsidian font-medium' : 'bg-obsidian text-silver border border-white/[0.1] hover:border-gold/50 hover:text-platinum'
+                    }">
+                        ${isSelected ? '✓' : '+'} ${item.num} ${item.title}
+                    </button>
+                `;
+            }).join('');
+
+            quickPills.innerHTML = pkgPillsHtml + addonPillsHtml;
+        }
+
+        function renderAll() {
+            renderPackagesGrid();
+            renderBentoGrid();
+            renderTransformationPreview();
+            renderFormScope();
+        }
+
+        function generateBriefText() {
+            const name = document.getElementById('client-name').value.trim() || 'Prospective Client';
+            const contact = document.getElementById('client-contact').value.trim() || 'Not provided';
+            const track = document.getElementById('client-track').value;
+            const details = document.getElementById('client-details').value.trim() || 'No details entered.';
+            const chosenPkg = servicePackages.find(p => p.id === selectedPackageId);
+            const chosen = deliverables.filter(d => selectedScope.has(d.id));
+
+            const pkgLine = chosenPkg
+                ? `${chosenPkg.tierLabel}: ${chosenPkg.name} — ${chosenPkg.price} (${chosenPkg.turnaround})`
+                : 'Custom / À La Carte Scope';
+
+            const scopeLines = chosen.length > 0
+                ? chosen.map(d => `  - [${d.num}] ${d.title}`).join('\n')
+                : '  - Standard package deliverables included';
+
+            return [
+                'A&P VENTUREZ — CUSTOM PROJECT BRIEF',
+                '====================================',
+                `Client Name: ${name}`,
+                `Contact: ${contact}`,
+                `Starting Point: ${track}`,
+                `Selected Package: ${pkgLine}`,
+                '',
+                'Selected Deliverables:',
+                scopeLines,
+                '',
+                'Project Details / URL:',
+                details
+            ].join('\n');
+        }
+
+        function copyFormattedBrief() {
+            const brief = generateBriefText();
+            if (copyToClipboard(brief)) {
+                document.getElementById('brief-confirmation').classList.remove('hidden');
+                showToast('Project brief copied to clipboard');
+            }
+        }
+
+        function handleBriefSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('client-name').value.trim();
+            const track = document.getElementById('client-track').value;
+            const chosenPkg = servicePackages.find(p => p.id === selectedPackageId);
+            const brief = generateBriefText();
+
+            copyToClipboard(brief);
+            document.getElementById('brief-confirmation').classList.remove('hidden');
+            showToast('Opening mail client for venturez.ap@gmail.com');
+
+            const pkgTag = chosenPkg ? ` — ${chosenPkg.name} (${chosenPkg.price})` : '';
+            const subject = `A&P Venturez Project Brief — ${name} (${track})${pkgTag}`;
+            window.location.href = `mailto:venturez.ap@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(brief)}`;
+        }
+
+        // Intake Form Logic
+        const intakeOptions = [
+            'Custom Website / Landing Page',
+            'Website Repair & Speed Fix',
+            'Executive Slide Deck / Pitch',
+            'Audio Overview / Podcast',
+            'Video Overview / Explainer',
+            'Strategy Mind Map / Blueprint',
+            'Website & Brand Audit Report',
+            'Custom Infographic / Flyer',
+            'Training Flashcards & Quizzes',
+            '24/7 AI Assistant & Lead Automation'
+        ];
+
+        document.getElementById('deliverable-checkboxes').innerHTML = intakeOptions.map(label => `
+            <label class="cursor-pointer flex items-center gap-3 p-3.5 rounded-xl bg-obsidian border border-white/[0.08] hover:border-gold/45 transition-colors">
+                <input type="checkbox" name="deliverables" value="${label}" class="w-4 h-4 shrink-0">
+                <span class="text-xs sm:text-sm text-platinum">${label}</span>
+            </label>
+        `).join('');
+
+        function updateProgress() {
+            const requiredIds = ['intake-name', 'intake-business', 'intake-email', 'intake-phone', 'intake-goals'];
+            let filled = 0;
+            requiredIds.forEach(id => {
+                if (document.getElementById(id).value.trim().length > 1) filled++;
+            });
+            const pct = Math.round((filled / requiredIds.length) * 100);
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+            document.getElementById('progress-label').textContent = `${pct}% Ready`;
+        }
+
+        function buildIntakeReport() {
+            const name = document.getElementById('intake-name').value.trim() || 'Not provided';
+            const business = document.getElementById('intake-business').value.trim() || 'Not provided';
+            const email = document.getElementById('intake-email').value.trim() || 'Not provided';
+            const phone = document.getElementById('intake-phone').value.trim() || 'Not provided';
+            const url = document.getElementById('intake-url').value.trim() || 'None yet';
+            const location = document.getElementById('intake-location').value.trim() || 'Not specified';
+            const stage = document.querySelector('input[name="stage"]:checked')?.value || 'Not selected';
+            const pkg = document.querySelector('input[name="package"]:checked')?.value || 'Not selected';
+            const goals = document.getElementById('intake-goals').value.trim() || 'Not provided';
+            const timeline = document.getElementById('intake-timeline').value;
+            const assets = document.getElementById('intake-assets').value;
+            const checkedBoxes = Array.from(document.querySelectorAll('input[name="deliverables"]:checked')).map(cb => `  - ${cb.value}`);
+
+            return [
+                'A&P VENTUREZ — CLIENT INTAKE SUBMISSION',
+                '=======================================',
+                `Client Name: ${name}`,
+                `Business / Idea: ${business}`,
+                `Email: ${email}`,
+                `Phone: ${phone}`,
+                `Location: ${location}`,
+                `Current Website / Link: ${url}`,
+                `Starting Stage: ${stage}`,
+                `Selected Package: ${pkg}`,
+                `Target Timeline: ${timeline}`,
+                `Materials Ready: ${assets}`,
+                '',
+                'Requested Deliverables:',
+                checkedBoxes.length > 0 ? checkedBoxes.join('\n') : '  - Standard package deliverables',
+                '',
+                'Primary Project Goals:',
+                goals
+            ].join('\n');
+        }
+
+        function copyIntakeSummary() {
+            const report = buildIntakeReport();
+            copyToClipboard(report);
+            document.getElementById('intake-preview-box').textContent = report;
+            document.getElementById('intake-success').classList.remove('hidden');
+            showToast('Intake summary copied to clipboard');
+        }
+
+        function submitIntakeForm(event) {
+            event.preventDefault();
+            const business = document.getElementById('intake-business').value.trim();
+            const pkg = document.querySelector('input[name="package"]:checked')?.value || '';
+            const report = buildIntakeReport();
+
+            copyToClipboard(report);
+            document.getElementById('intake-preview-box').textContent = report;
+            document.getElementById('intake-success').classList.remove('hidden');
+            showToast('Opening email for venturez.ap@gmail.com');
+
+            const subject = `New Client Intake: ${business} — ${pkg}`;
+            window.location.href = `mailto:venturez.ap@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(report)}`;
+        }
+
+        // Demo 01: Before/After Switcher
+        function switchSiteView(mode) {
+            const isAfter = mode === 'after';
+            const btnBefore = document.getElementById('btn-view-before');
+            const btnAfter = document.getElementById('btn-view-after');
+            const mockBefore = document.getElementById('mockup-before');
+            const mockAfter = document.getElementById('mockup-after');
+
+            if (isAfter) {
+                btnAfter.className = 'px-5 py-2.5 rounded-lg font-mono text-xs font-semibold transition-all bg-gold text-obsidian';
+                btnBefore.className = 'px-5 py-2.5 rounded-lg font-mono text-xs font-medium transition-all text-silver hover:text-platinum';
+                mockBefore.classList.add('hidden');
+                mockAfter.classList.remove('hidden');
+                document.getElementById('browser-url').textContent = 'https://brasscityauto.com (SSL Secured • Mobile Ready)';
+                const tag = document.getElementById('browser-tag');
+                tag.textContent = 'After (A&P Build)';
+                tag.className = 'font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 rounded bg-gold/20 text-gold border border-gold/40 shrink-0';
+                document.getElementById('stat-speed').textContent = '0.9 sec (Instant)';
+                document.getElementById('stat-speed').className = 'font-display font-bold text-xl text-emeraldAccent mt-1 block';
+                document.getElementById('stat-call').textContent = '1-Tap Sticky Header';
+                document.getElementById('stat-call').className = 'font-display font-bold text-xl text-emeraldAccent mt-1 block';
+                document.getElementById('stat-form').textContent = 'Live 60-Sec Quote';
+                document.getElementById('stat-form').className = 'font-display font-bold text-xl text-emeraldAccent mt-1 block';
+                document.getElementById('stat-conv').textContent = '6.4% (+5x Leads)';
+                document.getElementById('stat-conv').className = 'font-display font-bold text-xl text-gold mt-1 block';
+            } else {
+                btnBefore.className = 'px-5 py-2.5 rounded-lg font-mono text-xs font-medium transition-all bg-crimson text-white';
+                btnAfter.className = 'px-5 py-2.5 rounded-lg font-mono text-xs font-medium transition-all text-silver hover:text-platinum';
+                mockAfter.classList.add('hidden');
+                mockBefore.classList.remove('hidden');
+                document.getElementById('browser-url').textContent = 'http://brasscityauto-oldsite.net (Not Secure)';
+                const tag = document.getElementById('browser-tag');
+                tag.textContent = 'Before';
+                tag.className = 'font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 rounded bg-crimson/20 text-crimson border border-crimson/40 shrink-0';
+                document.getElementById('stat-speed').textContent = '6.8 sec (Slow)';
+                document.getElementById('stat-speed').className = 'font-display font-bold text-xl text-crimson mt-1 block';
+                document.getElementById('stat-call').textContent = 'Missing / Buried';
+                document.getElementById('stat-call').className = 'font-display font-bold text-xl text-crimson mt-1 block';
+                document.getElementById('stat-form').textContent = 'Broken Mailto Link';
+                document.getElementById('stat-form').className = 'font-display font-bold text-xl text-crimson mt-1 block';
+                document.getElementById('stat-conv').textContent = '1.2% (Leaking Calls)';
+                document.getElementById('stat-conv').className = 'font-display font-bold text-xl text-crimson mt-1 block';
+            }
+        }
+
+        function copyAuditPitch() {
+            const text = [
+                'Subject: Quick mobile fix I spotted for [Shop Name]',
+                '',
+                'Hi [Owner Name],',
+                'I was checking out [Shop Name] online today and noticed your phone number and quote form are tough to use on mobile phones—which usually sends ready-to-book customers to the next shop on Google.',
+                '',
+                'I run A&P Venturez here in CT, and I actually built a quick Before-and-After preview + 1-page audit showing how an upgraded site and promo graphic would look for a local shop.',
+                '',
+                'Want me to send the link over so you can take a look? No pressure at all.',
+                '',
+                'Best,',
+                'Paul Monroe | A&P Venturez',
+                'venturez.ap@gmail.com'
+            ].join('\n');
+            copyToClipboard(text);
+            showToast('Copied outreach email template');
+        }
+
+        // Demo 02: AI Receptionist Simulator
+        const aiResponses = {
+            'How much does a broken spring repair cost?': 'Single torsion spring replacements typically run $185–$245 installed, and high-cycle paired springs run $295–$365 with a 5-year warranty. Want me to reserve a same-day tech window for you?',
+            'My car is trapped inside—can someone come tonight?': 'Yes—we prioritize trapped-vehicle emergencies until 9:00 PM across Waterbury, Thomaston, and Southington with zero extra overtime surcharge. Reply with your street and phone number and our on-call tech will text you an ETA within 5 minutes.',
+            'Do you service Southington and Waterbury?': 'Yes! We have mobile service trucks stationed daily in Waterbury, Thomaston, Southington, Wolcott, and Plymouth with 60-minute average arrival times.'
+        };
+
+        function askAiDemo(question) {
+            const log = document.getElementById('ai-chat-log');
+            const answer = aiResponses[question] || 'I can help schedule that right away! Leave your phone number and town and our dispatch team will text you shortly.';
+            log.innerHTML += `
+                <div class="flex items-start justify-end gap-3">
+                    <div class="p-3.5 rounded-2xl rounded-tr-none bg-gold text-obsidian font-medium leading-relaxed max-w-[85%]">${question}</div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="px-2 py-1 rounded bg-gold/20 text-gold font-mono text-[10px] shrink-0 mt-0.5">AI</span>
+                    <div class="p-3.5 rounded-2xl rounded-tl-none bg-obsidian border border-gold/30 text-platinum leading-relaxed max-w-[88%]">${answer}</div>
+                </div>
+            `;
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Demo 03: Pitch Deck & Audio Progress
+        const slides = [
+            {
+                kicker: 'SLIDE 01 • THE OPPORTUNITY',
+                title: 'Car Owners Hate Waiting 3 Hours at Traditional Car Washes',
+                body: "ShineClub CT brings full-service exterior and interior detailing directly to the customer's driveway or office parking lot on a predictable monthly membership.",
+                metrics: [
+                    { label: 'Target Launch Price', value: '$89 / mo' },
+                    { label: 'Service Format', value: '100% Mobile Van' },
+                    { label: 'Setup Time', value: '48-Hr Brand Ready' }
+                ]
+            },
+            {
+                kicker: 'SLIDE 02 • THE SOLUTION',
+                title: 'Zero-Hassle Driveway Care With Self-Contained Water & Power',
+                body: 'Customers book in 30 seconds online. Our mobile unit arrives with onboard deionized water and quiet power—requiring zero hookups from the homeowner.',
+                metrics: [
+                    { label: 'Wash Time', value: '45 Minutes' },
+                    { label: 'Booking Friction', value: '1-Click Text' },
+                    { label: 'Customer Effort', value: 'Zero' }
+                ]
+            },
+            {
+                kicker: 'SLIDE 03 • MEMBERSHIP TIERS',
+                title: 'Three Simple Packages Built for High Retention',
+                body: 'Tiered monthly memberships lock in predictable cash flow while high-margin ceramic coatings and pet-hair packages boost average order value.',
+                metrics: [
+                    { label: 'Express Club', value: '$89 / mo' },
+                    { label: 'Executive Club', value: '$149 / mo' },
+                    { label: 'Ceramic Upsell', value: '+$299' }
+                ]
+            },
+            {
+                kicker: 'SLIDE 04 • ROUTE DENSITY',
+                title: 'Neighborhood Clustering Cuts Drive Time by 60%',
+                body: 'By assigning specific towns to specific days of the week and offering a 20% street-neighbor bonus, one technician completes 6–8 vehicles per day.',
+                metrics: [
+                    { label: 'Daily Capacity', value: '7 Cars / Van' },
+                    { label: 'Fuel Savings', value: '60% Less Driving' },
+                    { label: 'Gross Margin', value: '72%' }
+                ]
+            },
+            {
+                kicker: 'SLIDE 05 • UNIT ECONOMICS',
+                title: 'Startup Equipment & Van Launch Budget',
+                body: 'Lean startup footprint using a compact cargo van, pressure washer, extractor, and automated SMS reminders.',
+                metrics: [
+                    { label: 'Startup Gear', value: '$4,800' },
+                    { label: 'Break-Even', value: '22 Members' },
+                    { label: 'Month-3 Target', value: '65 Members' }
+                ]
+            },
+            {
+                kicker: 'SLIDE 06 • 30-DAY LAUNCH PLAN',
+                title: 'Ready to Launch With Website, Deck & Local Ads',
+                body: 'Week 1: Brand & Booking Site Live. Week 2: Founding 25 Member Promo. Week 3: First Neighborhood Routes Rolling.',
+                metrics: [
+                    { label: 'Launch Window', value: '14 Days' },
+                    { label: 'Founding Goal', value: '25 Members' },
+                    { label: 'Partner Ask', value: 'Seed Equipment' }
+                ]
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function renderSlide() {
+            const s = slides[currentSlide];
+            document.getElementById('slide-counter').textContent = `Slide ${currentSlide + 1} / ${slides.length}`;
+            document.getElementById('slide-kicker').textContent = s.kicker;
+            document.getElementById('slide-title').textContent = s.title;
+            document.getElementById('slide-body').textContent = s.body;
+            document.getElementById('slide-metrics').innerHTML = s.metrics.map(m => `
+                <div class="p-4 rounded-xl bg-obsidian/80 border border-white/[0.08]">
+                    <span class="font-mono text-[10px] uppercase tracking-wider text-silver block">${m.label}</span>
+                    <span class="font-display font-bold text-lg text-gold mt-1 block">${m.value}</span>
+                </div>
+            `).join('');
+        }
+
+        function changeSlide(delta) {
+            currentSlide = (currentSlide + delta + slides.length) % slides.length;
+            renderSlide();
+        }
+
+        let audioInterval = null;
+        let audioPct = 18;
+
+        function toggleAudioSim() {
+            const btn = document.getElementById('audio-toggle-btn');
+            if (audioInterval) {
+                clearInterval(audioInterval);
+                audioInterval = null;
+                btn.innerHTML = '&#9654; Play Sample Progress';
+                return;
+            }
+            btn.innerHTML = '&#10074;&#10074; Pause Progress';
+            audioInterval = setInterval(() => {
+                audioPct = audioPct >= 100 ? 0 : audioPct + 4;
+                document.getElementById('audio-progress').style.width = `${audioPct}%`;
+                const secs = Math.round((audioPct / 100) * 135);
+                const mins = String(Math.floor(secs / 60)).padStart(2, '0');
+                const rem = String(secs % 60).padStart(2, '0');
+                document.getElementById('audio-time').textContent = `${mins}:${rem}`;
+            }, 400);
+        }
+
+        // Initialize All Views
+        renderAll();
+        renderSlide();
+    </script>
+</body>
+</html>
